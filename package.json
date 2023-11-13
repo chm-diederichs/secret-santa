@@ -1,0 +1,27 @@
+{
+  "name": "secret-santa",
+  "version": "1.0.0",
+  "description": "santa's little helper",
+  "main": "index.js",
+  "scripts": {
+    "test": "standard && brittle test.js"
+  },
+  "keywords": [
+    "secret",
+    "santa"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "brittle": "^3.3.2",
+    "standard": "^17.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chm-diederichs/secret-santa.git"
+  },
+  "bugs": {
+    "url": "https://github.com/chm-diederichs/secret-santa/issues"
+  },
+  "homepage": "https://github.com/chm-diederichs/secret-santa#readme"
+}
