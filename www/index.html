@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>secret santa</title>
+  </head>
+  <body>
+    <script>
+      function updateList () {
+        const input = document.getElementById("name")
+        const name = input.value
+        input.value = ''
+
+        const element = document.getElementById("names")
+        element.innerHTML += "<li>" + name + "</li>\n"
+      }
+
+      function onSubmit () {
+        const element = document.getElementById("names")
+        const rows = element.innerHTML.trim().split('\n')
+        const participants = rows.map(row => row.match(/<li>(.*)<\/li>/)[1])
+
+        const params = new URLSearchParams()
+        params.set('names', btoa(participants.join(',')))
+        params.set('seed', Math.floor(Math.random() * 0xffff))
+
+        const href = window.location.href
+        const baseUrl = href.slice(0, href.indexOf('index.html'))
+        const link = baseUrl + 'reveal?' + params.toString()
+
+        const result = document.getElementById("result")
+        result.innerHTML = 'Share this link for results: '
+        result.innerHTML += `<a href=${link}>${href}</a>`
+      }
+    </script>
+    <h1>Secret Santa</h1>
+
+    <ol id="names">
+    </ol>
+
+    <div>
+      <input type="text" id="name" name="name" size="10" placeholder="add a name..."/>
+      <input id="clickMe" type="button" value="clickme" onclick="updateList()" />
+    <div>
+    <input id="submit" type="submit" value="Gen" onclick="onSubmit()" />
+    <div id="result">
+    </div>
+  </body>
+</html>

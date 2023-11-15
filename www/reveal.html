@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+ <head>
+   <title>secret santa</title>
+  </head>
+  <body onload="start()">
+   <script src="./index.js"></script>
+   <script>
+      const params = new URLSearchParams(window.location.search)
+
+      const names = atob(params.get('names')).split(',')
+      const seed = Number(params.get('seed'))
+
+      const gifts = secretSanta(names, { seed })
+
+      let revealed = false
+
+      function start () {
+        if (!window.location.search) {
+          window.alert('No details provided.')
+        }
+
+        const results = document.getElementById('results')
+        for (const name of names) {
+          results.innerHTML += `<input style="margin:10px;padding:10px 20px" id="${name}-reveal" type="button" value="${name}" onclick="onReveal('${name}')"/>`
+        }
+      }
+
+      function onReveal (name) {
+        if (revealed) {
+          window.alert("no cheating...")
+          return
+        }
+
+        revealed = true
+        const gift = gifts[names.indexOf(name)]
+        window.alert(name + ' gifts to ' + gift)
+
+        gifts.fill(null)
+      }
+    </script>
+
+    <h1>Secret Santa</h1>
+
+    <div id="results"/>
+  </body>
+</html>
