@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html>
  <head>
-   <title>secret santa</title>
+   <title>Secret Santa - Results!</title>
+   <link rel="icon" type="image/png" href="/images/favicon.png"/>
   </head>
   <body onload="start()">
    <script src="./index.js"></script>
    <script>
       const params = new URLSearchParams(window.location.search)
 
-      const names = atob(params.get('names')).split(',')
-      const seed = Number(params.get('seed'))
+      const input = atob(params.get('id')).split(':')
+      const names = input[0].split(',')
+      const seed = Number(input[1])
 
       const gifts = secretSanta(names, { seed })
 
@@ -40,7 +42,7 @@
       }
     </script>
 
-    <h1>Secret Santa</h1>
+    <h2>Click your name to reveal...</h2>
 
     <div id="results"/>
   </body>
