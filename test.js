@@ -13,7 +13,7 @@ test('simple', t => {
 
 test('seed', t => {
   const names = ['lisa', 'derek', 'carl', 'hannah', 'jordan']
-  const expected = ['derek', 'carl', 'jordan', 'lisa', 'hannah']
+  const expected = ['jordan', 'hannah', 'lisa', 'carl', 'derek']
 
   const gifts = secretSanta(names, { seed: 10009 })
 

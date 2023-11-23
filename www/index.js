@@ -1,10 +1,12 @@
-function secretSanta (names, { seed = Math.floor(Math.random() * 0xffffff) } = {}) {
+function secretSanta (names, { seed = Math.floor(Math.random() * 0xffff) } = {}) {
   if (names.length < 2) {
     throw new Error('Minimum 2 participants')
   }
 
+  // shuffle participants
   const receivers = shuffle(names, seed)
 
+  // swap if any got themselves
   for (let i = 0; i < names.length; i++) {
     const s = names[i]
     const r = receivers[i]
@@ -23,12 +25,16 @@ function secretSanta (names, { seed = Math.floor(Math.random() * 0xffffff) } = {
   return receivers
 }
 
+// fisher-yates shuffle
 function shuffle (arr, seed) {
   const shuffled = arr.slice()
-  const random = rng(seed)
+  const getRandomNumber = prng(seed)
 
   for (let i = 0; i < shuffled.length; i++) {
-    const j = Math.floor(random.next() * (shuffled.length - 1))
+    const random = getRandomNumber()
+    const j = Math.floor(random * (shuffled.length - 1))
+
+    // replace with random element from further down
     const tmp = shuffled[i]
     shuffled[i] = shuffled[j]
     shuffled[j] = tmp
@@ -37,16 +43,25 @@ function shuffle (arr, seed) {
   return shuffled
 }
 
-function rng (seed) {
-  return {
-    seed,
-    next () {
-      const left = seed * 4091
-      const right = seed * 4211
+// lazy pseudo-random number generator
+function prng (seed) {
+  return function () {
+    const a = seed
+    const b = rotate16(seed, 7) // we need a second number...
 
-      seed = (left + right) % 0xffffff // 24 bit
+    const left = a * 4091 // a * prime
+    const right = b * 4211 // b * prime2
 
-      return (seed % 1009) / 1009
-    }
+    seed = (left + right) & 0xffff // only need 16 bits
+
+    return (seed % 1009) / 1009 // mod prime3
   }
+}
+
+// left rotate 16 bit number by r bits
+function rotate16 (n, r) {
+  const top = (0xffff << r) & 0xffff
+  const bottom = (0xffff >> (16 - r)) & 0xffff
+
+  return n << ((16 - r) % 16) & 0xffff + n >>> r
 }
